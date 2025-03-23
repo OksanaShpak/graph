@@ -19,40 +19,43 @@ const account = {
   id: 1234,
   name: 'Transaction Account'
 }
-const bars = document.querySelector('.bars');
-const btnPrev = document.querySelector('.prev');
-const btnNext = document.querySelector('.next');
-let shift = 0;
 
-const buildGraph = (container, data) => {
-  const graphHeight = container.offsetHeight;
-  const maxBalance = Math.max(...data.map(item => item.balance));
+document.addEventListener('DOMContentLoaded', function () {
+  const bars = document.querySelector('.bars');
+  const btnPrev = document.querySelector('.prev');
+  const btnNext = document.querySelector('.next');
+  let shift = 0;
 
-  const barsHTML = data.map(({ balance }) => {
-    const barHeight = (balance / maxBalance) * graphHeight;
-    return `<div class="bar" data-balance="${balance}" style="height: ${barHeight}px;"></div>`;
-  }).join('');
+  const buildGraph = (container, data) => {
+    const graphHeight = container.offsetHeight;
+    const maxBalance = Math.max(...data.map(item => item.balance));
 
-  container.innerHTML = barsHTML;
-};
+    const barsHTML = data.map(({ balance }) => {
+      const barHeight = (balance / maxBalance) * graphHeight;
+      return `<div class="bar" data-balance="${balance}" style="height: ${barHeight}px;"></div>`;
+    }).join('');
 
-const updateGraph = (direction) => {
-  if (direction === 'next') {
-    shift -= 5;
+    container.innerHTML = barsHTML;
+  };
+
+  const updateGraph = (direction) => {
+    if (direction === 'next') {
+      shift -= 5;
+    }
+
+    if (direction === 'prev') {
+      shift += 5;
+    }
+
+    btnNext.disabled = shift <= 0;
+    btnPrev.disabled = shift >= account.balances.length - 5;
+    const start = Math.max(0, shift);
+
+    buildGraph(bars, account.balances.slice(start, start + 5).reverse());
   }
 
-  if (direction === 'prev') {
-    shift += 5;
-  }
+  btnNext.addEventListener('click', () => updateGraph('next'));
+  btnPrev.addEventListener('click', () => updateGraph('prev'));
 
-  btnNext.disabled = shift <= 0;
-  btnPrev.disabled = shift >= account.balances.length - 5;
-  const start = Math.max(0, shift);
-
-  buildGraph(bars, account.balances.slice(start, start + 5).reverse());
-}
-
-btnNext.addEventListener('click', () => updateGraph('next'));
-btnPrev.addEventListener('click', () => updateGraph('prev'));
-
-buildGraph(bars, account.balances.slice(0, 5).reverse());
+  buildGraph(bars, account.balances.slice(0, 5).reverse());
+});
