@@ -1,0 +1,77 @@
+.title {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.graph {
+  width: 300px;
+  margin: auto;
+  height: 200px;
+  margin-top: 40px;
+  position: relative;
+}
+
+.graph::after{
+  content: 'Balance';
+  position: absolute;
+  rotate: -90deg;
+  transform: translateY(-50%);
+  top: 50%;
+  left: -14%;
+}
+
+.graph::before {
+  content: '0';
+  position: absolute;
+  bottom: -2%;
+  left: -7%;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  height: 100%;
+}
+
+.bar {
+  background-color: blue;
+  width: 20px;
+}
+
+.bar:hover::after {
+  content: attr(data-balance);
+  position: absolute;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.prev,
+.next {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  line-height: 0.8;
+  transition: scale 0.2s;
+}
+
+.prev:hover,
+.next:hover {
+  scale: 1.1;
+}
